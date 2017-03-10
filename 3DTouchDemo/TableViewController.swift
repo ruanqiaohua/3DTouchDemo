@@ -10,9 +10,6 @@ import UIKit
 
 class TableViewController: UITableViewController,UIViewControllerPreviewingDelegate {
 
-    let detailViewController:DetailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(
-        withIdentifier: "detailViewController") as! DetailViewController
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,12 +18,6 @@ class TableViewController: UITableViewController,UIViewControllerPreviewingDeleg
         } else {
             print("3DTouch不可用")
         }
-        
-    }
-    
-    override var previewActionItems: [UIPreviewActionItem] {
-        
-        return detailViewController.previewActionItems
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,11 +50,13 @@ class TableViewController: UITableViewController,UIViewControllerPreviewingDeleg
         guard let indexPath = tableView.indexPathForRow(at: location),
             let cell = tableView.cellForRow(at: indexPath) else {
                 return nil }
+        guard let detailViewController:DetailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController else {
+            return nil
+        }
         detailViewController.preferredContentSize =
             CGSize(width: 0.0, height: 600)
         previewingContext.sourceRect = cell.frame
         return detailViewController
-
     }
 
 }
